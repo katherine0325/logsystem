@@ -12,6 +12,9 @@ class CrmerrorActions
 		fetch('/api/log/fetch')
 			.then(response => response.json())
 			.then(data => {
+				data.forEach(i => {
+					i.key = i._id;
+				})
 				this.actions.fetchCrmErrorSuccess(data);
 			})
 			.catch(e => console.log(e.toString()))

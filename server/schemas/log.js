@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-var Crm_errorSchema = new mongoose.Schema({
+var LogSchema = new mongoose.Schema({
     sUserName : String,
     sMethod : String,
     sIp : String,
@@ -9,4 +9,4 @@ var Crm_errorSchema = new mongoose.Schema({
     oOption : Object
 })
 
-module.exports = Crm_errorSchema
+module.exports = LogSchema

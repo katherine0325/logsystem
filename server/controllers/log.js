@@ -1,11 +1,12 @@
-// var common = require('../lib/common')
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/log');
+var common = require('../lib/common')
+// var mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/log');
 
-var logM = require('../models/log')
+// var logM = require('../models/log');
 
 class Log {
     fetch(req, res, next) {
+        var logM = common.helper.modelLoader('crm_error');
         logM.find({}, function(err, result) {
             console.log(result)
             return res.status(200).send(result)
@@ -65,7 +66,7 @@ class Log {
     
     // return res.status(200).send(data)
 
-        // var logM = common.helper.modelLoader('log');
+        // var logM = common.helper.modelLoader('Crm_error');
         // LogM.find({}, {})
         //     .sort({})
         //     .skip()
