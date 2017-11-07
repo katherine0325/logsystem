@@ -31,3 +31,23 @@ index.html  //页面基础文件
 package.json  //应用配置
 README.md  //说明文件
 webpack.config.js  //前端构建配置
+
+
+二、从入口开始的结构 --- server.js
+
+三、前端构建结构 --- webpack
+
+四、前端结构 --- flux 框架
+
+五、后端结构
+
+    - 连接mongo --- lib/common.js
+
+
+    - 从路由到控制器
+
+
+    - 任务
+
+    
+    - 定时任务设置
