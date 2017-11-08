@@ -51,7 +51,8 @@ class Crmerror extends Component {
     componentDidMount() {
 		CrmerrorStore.listen(this.onChange);
 
-        CrmerrorActions.fetchCrmError();
+        CrmerrorActions.fetchCrmError(this.state.pagination, {}, {});
+        CrmerrorActions.getTatol(this.state.pagination, {});
 	}
 
 	componentWillUnmount() {
@@ -68,7 +69,11 @@ class Crmerror extends Component {
                 columns={columns}
                 expandedRowRender={record => <p>{JSON.stringify(record.oOption, null, 2)}</p>}
                 dataSource={this.state.crmError}
-                pagination={{ pageSize: 10 }} />
+                pagination={this.state.pagination}
+                onChange={(pagination, filters, sorter) => {
+                    CrmerrorActions.fetchCrmError(pagination, filters, sorter);
+                    CrmerrorActions.getTatol(pagination, filters);
+                    }} />
         )
     }
 }
