@@ -6,15 +6,32 @@ class SiderBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapsed: false
+            collapsed: false,
+            subMenus: [{key: 'NONE', menus: []}]
         }
     }
 
-  toggleCollapsed() {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  }
+    componentDidMount() {
+      this.fetchMenu()
+    }
+
+
+    toggleCollapsed() {
+      this.setState({
+        collapsed: !this.state.collapsed,
+      });
+    }
+
+    fetchMenu() {
+      $.ajax({
+        method: "GET",
+        url: '/api/controllers/fetchMenu'
+      }).done(data => {
+        this.setState({
+          subMenus: data,
+        });
+      })
+    }
 
   render() {
     return (
@@ -41,20 +58,18 @@ class SiderBar extends Component {
             <Icon type="inbox" />
             <span>Option 3</span>
           </Menu.Item>*/}
-          <SubMenu key="sub1" title={<span><Icon type="mail" /><span>CRM</span></span>}>
-            <Menu.Item key="1">ERROR</Menu.Item>
-            <Menu.Item key="2">WARN</Menu.Item>
-            <Menu.Item key="3">INFO</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>MSO</span></span>}>
-            <Menu.Item key="4">ERROR</Menu.Item>
-            <Menu.Item key="5">WARN</Menu.Item>
-            <Menu.Item key="6">INFO</Menu.Item>
-            {/*<SubMenu key="sub3" title="Submenu">
-              <Menu.Item key="11">Option 11</Menu.Item>
-              <Menu.Item key="12">Option 12</Menu.Item>
-            </SubMenu>*/}
-          </SubMenu>
+          {this.state.subMenus.map(i => (
+            <SubMenu key={i.key} title={<span><Icon type="appstore" /><span>{i.key}</span></span>}>
+              {i.menus.map(j => (
+                <Menu.Item key={`${i.key}${j}`}><a href={`#/log/${i.key.toLowerCase()}_${j.toLowerCase()}`}>{j}</a></Menu.Item>
+              ))}
+            </SubMenu>
+          ))}
+
+          <Menu.Item key="logsystem">
+            <Icon type="pie-chart" />
+            <span>logsystem</span>
+          </Menu.Item>
         </Menu>
       </div>
     );

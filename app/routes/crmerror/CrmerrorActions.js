@@ -4,35 +4,25 @@ class CrmerrorActions
 {
 	constructor() {
 		this.generateActions(
-			'fetchCrmErrorSuccess',
-			'getTatolSuccess'
+			'listLogsSuccess',
+			'changeFilters',
+			'clearSCreateTime',
+			'startLoading',
+			'clearFilter',
+			'loadPage'
 		);
 	}
 
-	fetchCrmError(pagination, filters, sorter) {
+	listLogs(pagination, filters, sorter, page) {
 		$.ajax({
 			method: 'GET', 
-			url: '/api/log/fetch',
-			data: {pagination, filters, sorter}
+			url: '/api/log/list',
+			data: {pagination, filters, sorter, page}
 		}).done(data => {
-			data.forEach(i => {
+			data.data.forEach(i => {
 				i.key = i._id;
 			})
-			this.actions.fetchCrmErrorSuccess(data);
-		})
-	}
-
-	getTatol(pagination, filters) {
-		$.ajax({
-			method: 'GET',
-			url: '/api/log/count',
-			body: {pagination, filters}
-		}).done(data => {
-			this.actions.getTatolSuccess({
-				current: pagination.current,
-				pageSize: pagination.pageSize,
-				total: data.total
-			});
+			this.actions.listLogsSuccess(data);
 		})
 	}
 }

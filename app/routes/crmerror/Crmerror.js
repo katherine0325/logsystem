@@ -1,24 +1,90 @@
 import React, { Component } from 'react'
 import { Table, Input, Button, Icon, DatePicker } from 'antd'
 const { RangePicker } = DatePicker;
+import moment from 'moment';
 
 import CrmerrorActions from './CrmerrorActions'
 import CrmerrorStore from './CrmerrorStore'
 
-const columns = [
-    { title: '创建人', dataIndex: 'sUserName', key: 'sUserName', filters: [
-        { text: 'Joe', value: 'Joe' },
-        { text: 'Jim', value: 'Jim' },
-      ], onFilter: (value, record) => record.sUserName.includes(value),
-    sorter: (a, b) => a.name.length - b.name.length,
-    //   sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+class Crmerror extends Component {
+    constructor(props) {
+		super(props);
+		this.state = CrmerrorStore.getState();
+		this.onChange = this.onChange.bind(this);
+	}
+
+    componentDidMount() {
+		CrmerrorStore.listen(this.onChange);
+
+        var page = this.props.location.pathname.split('/')[2];
+        CrmerrorActions.loadPage(page);
+        CrmerrorActions.listLogs(this.state.initPagination, {}, {}, page);
+	}
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location.pathname != this.props.location.pathname) {
+            var page = nextProps.location.pathname.split('/')[2];
+            CrmerrorActions.loadPage(page);
+            CrmerrorActions.listLogs(this.state.initPagination, {}, {}, page);
+        } 
+    }
+
+	componentWillUnmount() {
+		CrmerrorStore.unlisten(this.onChange);
+	}
+
+	onChange(state) {
+		this.setState(state);
+	}
+
+    render() {
+        const columns = [
+    { title: '创建人', dataIndex: 'sUserName', key: 'sUserName', 
+        filterDropdown: (
+            <div className="custom-filter-dropdown">
+                <Input
+                    value={this.state.filters.sUserName.value}
+                    onChange={e => {CrmerrorActions.changeFilters({key: 'sUserName', logic: 'include', value: e.target.value})}}
+                    onPressEnter={e => {
+                        CrmerrorActions.listLogs(this.state.initPagination, this.state.filters, {}, this.state.page);
+                    }}
+                />
+            </div>
+      ),
+      /*filterIcon: <Icon type="smile-o" style={{ color: this.state.filtered ? '#108ee9' : '#aaa' }} />,
+      filterDropdownVisible: this.state.filterDropdownVisible,
+      onFilterDropdownVisibleChange: (visible) => {
+        this.setState({
+          filterDropdownVisible: visible,
+        }, () => this.searchInput.focus());
+      },*/
  }, 
     { title: '动作', dataIndex: 'sMethod', key: 'sMethod', filters: [
         { text: 'GET', value: 'GET' },
         { text: 'POST', value: 'POST' },
-      ], onFilter: (value, record) => record.sMethod.includes(value), }, 
-    { title: 'Ip', dataIndex: 'sIp', key: 'sIp', onFilter: (value, record) => record.sUserName.includes(value), }, 
-    { title: 'Url', dataIndex: 'sUrl', key: 'sUrl', onFilter: (value, record) => record.sUserName.includes(value),
+      ]}, 
+    { title: 'Ip', dataIndex: 'sIp', key: 'sIp', filterDropdown: (
+            <div className="custom-filter-dropdown">
+                <Input
+                    value={this.state.filters.sIp.value}
+                    onChange={e => {CrmerrorActions.changeFilters({key: 'sIp', logic: 'include', value: e.target.value})}}
+                    onPressEnter={e => {
+                        CrmerrorActions.listLogs(this.state.initPagination, this.state.filters, {}, this.state.page);
+                    }}
+                />
+            </div>
+      )}, 
+    { title: 'Url', dataIndex: 'sUrl', key: 'sUrl',filterDropdown: (
+            <div className="custom-filter-dropdown">
+                <Input
+                    value={this.state.filters.sUrl.value}
+                    onChange={e => {CrmerrorActions.changeFilters({key: 'sUrl', logic: 'include', value: e.target.value})}}
+                    onPressEnter={e => {
+                        CrmerrorActions.listLogs(this.state.initPagination, this.state.filters, {}, this.state.page);
+                    }}
+                />
+            </div>
+      )
 /*filterDropdown: (
         <div className="custom-filter-dropdown">
           <Input
@@ -33,47 +99,46 @@ const columns = [
             <RangePicker
                 showTime={{ format: 'HH:mm' }}
                 format="YYYY-MM-DD HH:mm"
-                placeholder={['Start Time', 'End Time']}
-                onChange={e => {}}
-                onOk={e => {}}
+                onChange={(value, dateString) => {
+                    if(value && value.length === 0 && this.state.filters && this.state.filters.sCreateTime) {
+                        CrmerrorActions.clearSCreateTime();
+                        CrmerrorActions.listLogs(this.state.initPagination, this.state.filters, {}, this.state.page);
+                    }
+                }}
+                onOk={value => {
+                    CrmerrorActions.listLogs(this.state.pagination, Object.assign(this.state.filters, {sCreateTime: {logic: 'range', value: value.map(i => moment(i._d).format('YYYY-MM-DD HH:mm'))}}), {}, this.state.page)
+                }}
             />
         )
     }
 ]
 
-class Crmerror extends Component {
-    constructor(props) {
-		super(props);
-		this.state = CrmerrorStore.getState();
-		this.onChange = this.onChange.bind(this);
-	}
-
-    componentDidMount() {
-		CrmerrorStore.listen(this.onChange);
-
-        CrmerrorActions.fetchCrmError(this.state.pagination, {}, {});
-        CrmerrorActions.getTatol(this.state.pagination, {});
-	}
-
-	componentWillUnmount() {
-		CrmerrorStore.unlisten(this.onChange);
-	}
-
-	onChange(state) {
-		this.setState(state);
-	}
-
-    render() {
         return (
-            <Table
-                columns={columns}
-                expandedRowRender={record => <p>{JSON.stringify(record.oOption, null, 2)}</p>}
-                dataSource={this.state.crmError}
-                pagination={this.state.pagination}
-                onChange={(pagination, filters, sorter) => {
-                    CrmerrorActions.fetchCrmError(pagination, filters, sorter);
-                    CrmerrorActions.getTatol(pagination, filters);
-                    }} />
+            <div>
+                <div style={{ marginBottom: 16 }}>
+                    <Button
+                        type="primary"
+                        loading={this.state.reloadLoading}
+                        onClick={e => {
+                            CrmerrorActions.startLoading('reload');
+                            CrmerrorActions.clearFilter();
+                            CrmerrorActions.listLogs(this.state.initPagination, {}, {}, this.state.page)
+                            }} >
+                        Reload
+                    </Button>
+                </div>
+                <Table
+                    columns={columns}
+                    expandedRowRender={record => <p>{JSON.stringify(record.oOption, null, 2)}</p>}
+                    dataSource={this.state.logs}
+                    pagination={this.state.pagination}
+                    onChange={(pagination, filters, sorter) => {
+                        if(filters.sMethod) {
+                            filters.sMethod = {logic: '=', value: filters.sMethod}
+                        }
+                        CrmerrorActions.listLogs(pagination, Object.assign(this.state.filters, filters), sorter, this.state.page);
+                        }} />
+            </div>
         )
     }
 }

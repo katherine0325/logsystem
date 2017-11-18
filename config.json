@@ -1,0 +1,29 @@
+{
+    "test": {
+        "mongodb": {
+            "dbhost": "localhost",
+            "dbport": "28018",
+            "dbname": "",
+            "dbpass": ""
+        },
+        "log_connections": ["crm_error", "crm_warn", "crm_info", "mso_error", "mso_warn", "mso_info"]
+    },
+    "development": {
+        "mongodb": {
+            "dbhost": "",
+            "dbport": "",
+            "dbname": "",
+            "dbpass": ""
+        },
+        "log_connections": []
+    },
+    "production": {
+        "mongodb": {
+            "dbhost": "",
+            "dbport": "",
+            "dbname": "",
+            "dbpass": ""
+        },
+        "log_connections": []
+    }
+}
