@@ -16,12 +16,7 @@ var helper = function() {
         }
         mongoose.connect(`mongodb://localhost/${db}`);
 
-        let schemaFeild = connectionName;
-        if(config.log_connections.indexOf(connectionName) != -1) {
-            schemaFeild = 'log'
-        }
-
-        var schema = require(`../schemas/${schemaFeild}.js`);
+        var schema = require(`../schemas/${connectionName}.js`);
         var model = mongoose.model(connectionName, schema);
 
         return model;

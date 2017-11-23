@@ -61,7 +61,28 @@ class Log {
     // }
 
     list(req, res, next) {
-        
+        if(!req.query || !req.query.dateRange || !req.query.dateRange.from || !req.query.dateRange.to || !req.query.system || !req.query.level) {
+            return res.status(451).send({code: 451, msg: '缺少必要的参数', eres: req.query})
+        }
+
+        var params = {
+            sCreateTime: {$gte: req.query.dateRange.from, $lte: req.query.dateRange.to},
+            sSystem: req.query.system,
+            sLevel: req.query.level
+        }
+
+        var logM = common.helper.modelLoader('log');
+
+        co(function*() {
+            var total = yield logM.count(params);
+
+            logM.find(params, {})
+                .limit(1000)
+                .exec(function(err, result) {
+                    if(err) return res.status(500).send({code: 500, msg: '', eres: err.toString()});
+                    return res.status(200).send({result, total});
+                })
+        })
     }
 }
 
