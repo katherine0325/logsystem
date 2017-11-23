@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 /**
  * API
  */
-app.get('/api/:controller/:measure', function(req, res, next) {
+app.get('/sapi/:controller/:measure', function(req, res, next) {
 	var file = require(`./server/controllers/${req.params.controller}`);
 	file = new file();
 	return file[req.params.measure](req, res, next);

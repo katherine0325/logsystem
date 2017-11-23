@@ -2,22 +2,22 @@ import React, { Component } from 'react'
 import { Input, Button, Icon, DatePicker, Dropdown, Menu } from 'antd'
 const { RangePicker } = DatePicker;
 
-import LogActions from './LogActions'
-import LogStore from './LogStore'
+import SearchIndexActions from './SearchIndexActions'
+import SearchIndexStore from './SearchIndexStore'
 
-class Log extends Component {
+class SearchIndex extends Component {
     constructor(props) {
         super(props);
-        this.state = LogStore.getState();
+        this.state = SearchIndexStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
-        LogStore.listen(this.onChange);
+        SearchIndexStore.listen(this.onChange);
     }
 
     componentWillUnmount() {
-        LogStore.unlisten(this.onChange);
+        SearchIndexStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -28,13 +28,13 @@ class Log extends Component {
         const systemMenu = (
             <Menu>
                 <Menu.Item>
-                    <a onClick={e => {LogActions.getSystem('MSO')}}>MSO</a>
+                    <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item</a>
                 </Menu.Item>
                 <Menu.Item>
-                    <a onClick={e => {LogActions.getSystem('CRM')}}>CRM</a>
+                    <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">2nd menu item</a>
                 </Menu.Item>
                 <Menu.Item>
-                    <a onClick={e => {LogActions.getSystem('DS')}}>DS</a>
+                    <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">3rd menu item</a>
                 </Menu.Item>
             </Menu>
         )
@@ -42,27 +42,27 @@ class Log extends Component {
         const levelMenu = (
             <Menu>
                 <Menu.Item>
-                    <a onClick={e => {LogActions.getLevel('ERROR')}}>ERROR</a>
+                    <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item</a>
                 </Menu.Item>
                 <Menu.Item>
-                    <a onClick={e => {LogActions.getLevel('WARN')}}>WARN</a>
+                    <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">2nd menu item</a>
                 </Menu.Item>
                 <Menu.Item>
-                    <a onClick={e => {LogActions.getLevel('INFO')}}>INFO</a>
+                    <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">3rd menu item</a>
                 </Menu.Item>
             </Menu>
         )
 
         return (
-            <div>
+            <div style={{marginTop: 200, textAlign: 'center'}}>
+                <h1 className="title">日志系统</h1>
                 <div>
-                    <h1>日志系统</h1>
                     日期：（不能超过3天）
                     <RangePicker
                         showTime={{ format: 'HH:mm' }}
                         format="YYYY-MM-DD HH:mm"
                         onChange={(value, dateString) => {}}
-                        onOk={value => {LogActions.pickDateRange(value)}}
+                        onOk={value => {}}
                     />
                     系统：
                     <Dropdown overlay={systemMenu} placement="bottomCenter">
@@ -72,16 +72,11 @@ class Log extends Component {
                     <Dropdown overlay={levelMenu} placement="bottomCenter">
                         <Button>bottomCenter</Button>
                     </Dropdown>
-                    <Button type="primary" onClick={e => {LogActions.fetchLogs(this.state.dateRange, this.state.system, this.state.level)}}>Primary</Button>
-                </div>
-                <div>
-                    {this.state.datas.map(i => (
-                        <pre key={i._id}>{JSON.stringify(i, null, 2)}</pre>
-                    ))}
+                    <Button type="primary">Primary</Button>
                 </div>
             </div>
         )
     }
 }
 
-export default Log
+export default SearchIndex

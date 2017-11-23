@@ -1,6 +1,6 @@
 import alt from '../../alt';
 
-class PageoneActions
+class SearchIndexActions
 {
 	constructor() {
 		this.generateActions(
@@ -9,4 +9,4 @@ class PageoneActions
 	}
 }
 
-export default alt.createActions(PageoneActions);
+export default alt.createActions(SearchIndexActions);
