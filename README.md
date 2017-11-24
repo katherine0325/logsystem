@@ -51,3 +51,7 @@ webpack.config.js  //前端构建配置
 
     
     - 定时任务设置
+
+
+mongo日志表设置过期时间
+db.getCollection('logs').ensureIndex({sSystemTime: 1}, {expireAfterSeconds: 2592000})

@@ -79,9 +79,9 @@ class Log extends Component {
                     <Dropdown size="large" overlay={levelMenu} placement="bottomCenter">
                         <Button>{this.state.level}</Button>
                     </Dropdown>
-                    <Button type="primary" size="large" onClick={e => {LogActions.fetchLogs(this.state.dateRange, this.state.system, this.state.level)}}>搜索</Button>
+                    <Button type="primary" size="large" onClick={e => {LogActions.fetchLogs(this.state.dateRange, this.state.system, this.state.level.toLowerCase())}}>搜索</Button>
                 </div>
-                <Alert style={{display: this.state.total > 0? '': 'none'}} message={`共计${this.state.total}条数据。${this.state.total > 10? '数据量超过1000，仅显示1000条，如需全面显示，请缩小时间范围': ''}`} type="info" />
+                <Alert style={{display: this.state.total > 0? '': 'none'}} message={`共计${this.state.total}条数据。${this.state.total > 500? '数据量超过500，仅显示500条，如需全面显示，请缩小时间范围': ''}`} type="info" />
                 <div>
                     {this.state.logData.map(i => (
                         <pre key={i._id}>{JSON.stringify(i, null, 2)}</pre>

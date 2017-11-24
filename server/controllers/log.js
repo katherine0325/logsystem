@@ -66,7 +66,7 @@ class Log {
         }
 
         var params = {
-            sCreateTime: {$gte: req.query.dateRange.from, $lte: req.query.dateRange.to},
+            sSystemTime: {$gte: req.query.dateRange.from, $lte: req.query.dateRange.to},
             sSystem: req.query.system,
             sLevel: req.query.level
         }

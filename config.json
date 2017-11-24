@@ -6,7 +6,7 @@
             "dbname": "",
             "dbpass": ""
         },
-        "log_connections": ["crm_error", "crm_warn", "crm_info", "mso_error", "mso_warn", "mso_info"]
+        "system": ["MSO", "CRM", "DS"]
     },
     "development": {
         "mongodb": {
@@ -15,7 +15,7 @@
             "dbname": "",
             "dbpass": ""
         },
-        "log_connections": []
+        "system": []
     },
     "production": {
         "mongodb": {
@@ -24,6 +24,6 @@
             "dbname": "",
             "dbpass": ""
         },
-        "log_connections": []
+        "system": []
     }
 }

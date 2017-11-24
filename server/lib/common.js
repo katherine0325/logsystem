@@ -1,7 +1,12 @@
 const path = require('path');
 const mongoose = require('mongoose');
-const config = require('../../config')
 
+
+const config = require('../../config');
+exports.config = config;
+
+const errorCode = require('../configure/error_code')
+exports.errorCode = errorCode;
 
 var helper = function() {
     // 连接数据库和表
