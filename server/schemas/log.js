@@ -5,6 +5,9 @@ var LogSchema = new mongoose.Schema({
     sMethod : String,
     sIp : String,
     sUrl : String,
+    sSystem: String,
+    sLevel: String,
+    sMark: String,
     sCreateTime : String,
     oOption : Object
 })

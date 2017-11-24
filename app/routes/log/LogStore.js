@@ -6,24 +6,14 @@ import LogActions from './LogActions'
 class LogStore {
   constructor() {
     this.bindActions(LogActions);
-    this.datas = [
-        {
-            _id: 1,
-            name: '111',
-            age: '222'
-        },
-        {
-            _id: 2,
-            name: '111',
-            age: '222'
-        }
-    ];
+    this.logData = [];
+    this.total = -1;
     this.dateRange = {
-        from: '',
-        to: ''
+        from: moment().format('YYYY-MM-DD') + ' 00:00',
+        to: moment().format('YYYY-MM-DD') + ' 23:59'
     };
-    this.system = '';
-    this.level = '';
+    this.system = 'CRM';
+    this.level = 'ERROR';
   }
 
   onPickDateRange(value) {
@@ -37,6 +27,11 @@ class LogStore {
 
   onGetLevel(level) {
     this.level = level;
+  }
+
+  onFetchLogsSuccess(logData) {
+    this.logData = logData.result;
+    this.total = logData.total;
   }
 }
 
