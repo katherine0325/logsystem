@@ -1,5 +1,4 @@
 module.exports = {
-	"200": "success",
 	"450": "params is incorrect",
 	"451": "normal wrong",
 	"452": "invalid value for schema",

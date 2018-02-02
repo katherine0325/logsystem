@@ -33,7 +33,7 @@ module.exports = {
       },
     ]
   },
-  babel: {  // 引入antd  其中需要的npm是  "babel-plugin-transform-runtime": "^6.15.0","style-loader": "^0.12.3","css-loader": "^0.14.5"
+  babel: {  // 引入antd  其中需要的npm是  "babel-plugin-import": "^1.6.2","babel-plugin-transform-runtime": "^6.15.0","style-loader": "^0.12.3","css-loader": "^0.14.5"
       presets: ['es2015', 'stage-0', 'react'],
       plugins: ['transform-runtime', ['import', {
           libraryName: 'antd',
